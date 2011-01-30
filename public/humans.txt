@@ -1,0 +1,12 @@
+/* TEAM */
+  Creator: Zach Bialecki
+  Twitter: @zbialecki
+
+/* THANKS */
+  Names (& URL): 
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: jQuery, Raphael.js
+  Software: Node.js
+   

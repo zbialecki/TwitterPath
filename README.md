@@ -1,8 +1,8 @@
 TwitterPath
-===========
+===
 
 A new way to explore the connections between people on Twitter
---------------------------------------------------------------
+---
 
 Powered by node.js as well as:
 

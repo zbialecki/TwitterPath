@@ -1,13 +1,28 @@
+var PORT = 36687;
+
 var express = require('express')
-  , io = require('socket.io');
+  , io      = require('socket.io')
+  , jqtpl   = require('jqtpl');
 
 var app = express.createServer();
 
-app.get('/', function(req, res){
-    res.send('Hello World');
+app.configure(function() {
+	app.set("view engine", "html");
+	app.register(".html", require("jqtpl"));
+	app.use(express.bodyDecoder());
+	app.use(express.methodOverride());
+	app.use(express.staticProvider(__dirname + '/public'));
+	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
-app.listen(36687);
+app.get('/', function(req, res){
+    res.render('index.html', {
+	    locals: { title: 'TwitterPath :: Explore Connections on Twitter' },
+		layout: 'layout.html'
+	});
+});
+
+app.listen(PORT);
 
 var socket = io.listen(app);
 socket.on('connection', function(client) {

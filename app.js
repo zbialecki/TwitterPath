@@ -8,7 +8,7 @@ var app = express.createServer();
 
 app.configure(function() {
 	app.set("view engine", "html");
-	app.register(".html", require("jqtpl"));
+	app.register(".html", jqtpl);
 	app.use(express.bodyDecoder());
 	app.use(express.methodOverride());
 	app.use(express.staticProvider(__dirname + '/public'));
@@ -16,16 +16,19 @@ app.configure(function() {
 });
 
 app.get('/', function(req, res){
-    res.render('index.html', {
-	    locals: { title: 'TwitterPath :: Explore Connections on Twitter' },
+    res.render('index', {
+	    locals: { 
+		    title: 'TwitterPath :: Explore Connections on Twitter',
+		},
 		layout: 'layout.html'
 	});
 });
 
 app.listen(PORT);
+console.log('Server is now listening on port ' + PORT + '\n');
 
 var socket = io.listen(app);
 socket.on('connection', function(client) {
-    client.on('message', function() {});
+    client.on('message', function(msg) { console.log(msg) });
     client.on('disconnect', function() {});
 });

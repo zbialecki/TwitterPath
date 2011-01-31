@@ -5,38 +5,34 @@ var TwitterPath = function() {
 TwitterPath.prototype = {
 	
 	init: function() {
-		console.log('in init');
 		var width = $(window).width();
 		var height = $(window).height();
 	
-		var paper_width = Math.floor(.9 * width);
-		var x_coord = Math.floor((width - paper_width) / 2)
+		var paper_height = Math.floor(.8 * height);
+		var y_coord = Math.floor((height - paper_height) / 2)
 
-		this.paper = Raphael(x_coord, 0, paper_width, height);
+		this.paper = Raphael(0, y_coord, width, paper_height);
 		
-		// Creates circle at x = 50, y = 40, with radius 10
-		var bg = this.paper.rect(0, -1, paper_width, height + 2).attr({
+		var bg = this.paper.rect(-1, 0, width + 2, paper_height).attr({
 			fill: '30-#ddd-#777',
-			stroke: '#f00'
+			stroke: '#555'
 		});
+	},
+	
+	addNode: function(profileNode) {
+		profileNode.draw(this.paper);
 	}
 };
 
-var ProfileNode = function(paper, initialX, initialY, profileInfo) {
+var ProfileNode = function(initialX, initialY, profileInfo) {
 	this.setUserInfo(profileInfo);
 	this.setX(initialX);
 	this.setY(initialY);
-	this.setPaper(paper);
-	this.draw();
 }
 
 ProfileNode.prototype = {
 	setUserInfo: function(profileInfo) {
 		this.info = profileInfo;
-	},
-	
-	setPaper: function(paper) {
-		this.paper = paper;
 	},
 	
 	setX: function(x) {
@@ -47,18 +43,21 @@ ProfileNode.prototype = {
 		this.y = y;
 	},
 	
-	draw: function() {
-		this.paper.image(this.info.profile_image_url, this.x, this.y, 48, 48);
+	draw: function(paper) {
+		paper.image(this.info.profile_image_url, this.x, this.y, 48, 48);
 	}
 };
 
 $(document).ready(function() {
-	console.log('In doc.ready');
 	var twitPath = new TwitterPath();
-	var testNode = new ProfileNode(twitPath.paper, 100, 100, {
-		profile_image_url : 'http://a1.twimg.com/profile_images/1212991106/136657032_full_r_470x470_reasonably_small.jpg'
+
+	socket = new io.Socket('localhost');
+	socket.connect();
+	socket.send('Check it out bitches!');
+	socket.on('message', function(data){
+	    console.log('Got data from the server: ' + data);
 	});
-	
+		
 	/***
 	$.getJSON('seeds.json', function(seeds) {
 		var friendlist = "<ul>";

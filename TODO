@@ -1,3 +1,5 @@
-Use HTML5 Boilerplate
+Next Steps
+
 Connect to Twitter
-Use RaphaelJs for graphical representation of connections
+Restructure client side javascript using Backbone.js
+Write the visualization code in Raphaël.js

@@ -27,6 +27,5 @@ dwsync.xml
 publish
 .idea
 
-# build script local files
-build/buildinfo.properties
-build/config/buildinfo.properties
+# Server logs
+nohup.out

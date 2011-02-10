@@ -2,26 +2,55 @@ var PORT = 36687;
 
 var express = require('express')
   , io      = require('socket.io')
-  , jqtpl   = require('jqtpl');
+  , jqtpl   = require('jqtpl')
+  , OAuth   = require('oauth').OAuth;
 
+var oa = new OAuth('https://api.twitter.com/oauth/request_token',
+                   'https://api.twitter.com/oauth/access_token',
+                   'pqlCzlp1H9q8dxeKUDSmTw',
+                   'ZkYzKZmdfmJovXQoVt9AgLl75chcqcTb04N3WEwYA',
+                   '1.0',
+                   null,
+                   'HMAC-SHA1');
+                    
 var app = express.createServer();
 
 app.configure(function() {
-	app.set("view engine", "html");
-	app.register(".html", jqtpl);
-	app.use(express.bodyDecoder());
-	app.use(express.methodOverride());
-	app.use(express.staticProvider(__dirname + '/public'));
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.set("view engine", "html");
+    app.register(".html", jqtpl);
+    app.use(express.bodyDecoder());
+    app.use(express.methodOverride());
+    app.use(express.staticProvider(__dirname + '/public'));
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.get('/', function(req, res){
-    res.render('index', {
-	    locals: { 
-		    title: 'TwitterPath :: Explore Connections on Twitter',
-		},
-		layout: 'layout.html'
+	oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
+		if (error) {
+			console.log('error :' + error);
+		} else {
+		    console.log('oauth_token :' + oauth_token);
+		    console.log('oauth_token_secret :' + oauth_token_secret);
+		    console.log('requestoken results :' + sys.inspect(results));
+		    console.log('Requesting access token...');
+		    oa.getOAuthAccessToken(oauth_token, oauth_token_secret, function(error, oauth_access_token, oauth_access_token_secret, results2) {
+				console.log('oauth_access_token :' + oauth_access_token);
+				console.log('oauth_token_secret :' + oauth_access_token_secret);
+				console.log('accesstoken results :' + sys.inspect(results2));
+				var data= "";
+				oa.getProtectedResource('', 'GET', oauth_access_token, oauth_access_token_secret, function (error, data, response) {
+					console.log(data);
+				});
+		    });
+	 	}
 	});
+	
+    res.render('index', {
+        locals: { 
+            title: 'TwitterPath :: Explore Connections on Twitter',
+        },
+        layout: 'layout.html'
+    });
 });
 
 app.listen(PORT);

@@ -24,8 +24,13 @@ app.configure(function() {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
-app.get('/', function(req, res){
-	oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
+app.get('/', function(req, res) {
+    res.render('index', {
+        locals: { title: 'TwitterPath :: Explore Connections on Twitter' },
+        layout: 'layout.html'
+    });
+	
+	oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results) {
 		if (error) {
 			console.log('error :' + error);
 		} else {
@@ -37,20 +42,9 @@ app.get('/', function(req, res){
 				console.log('oauth_access_token :' + oauth_access_token);
 				console.log('oauth_token_secret :' + oauth_access_token_secret);
 				console.log('accesstoken results :' + sys.inspect(results2));
-				var data= "";
-				oa.getProtectedResource('', 'GET', oauth_access_token, oauth_access_token_secret, function (error, data, response) {
-					console.log(data);
-				});
 		    });
 	 	}
 	});
-	
-    res.render('index', {
-        locals: { 
-            title: 'TwitterPath :: Explore Connections on Twitter',
-        },
-        layout: 'layout.html'
-    });
 });
 
 app.listen(PORT);

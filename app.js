@@ -1,5 +1,11 @@
+// Global Server Settings
 var PORT = 36687;
 
+// Twitter App Settings
+var ACCESS_TOKEN = '73127148-1IlTpT57TDJZLiU65vIMFyeYavYNXQDUi7f7BN6Pm'
+  , ACCESS_TOKEN_SECRET = 'ZHv2GVMEVrtbJHPtDzoQIptW5Cl3a4jBruwkyypvCJo';
+
+// Required Modules
 var sys     = require('sys')
   , express = require('express')
   , io      = require('socket.io')
@@ -25,30 +31,36 @@ app.configure(function() {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
+// Routes
 app.get('/', function(req, res) {
     res.render('index', {
         locals: { title: 'TwitterPath :: Explore Connections on Twitter' },
         layout: 'layout.html'
     });
     
-    oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results) {
-        if (error) {
-            console.log('error :' + error);
-        } else {
-            console.log('oauth_token :' + oauth_token);
-            console.log('oauth_token_secret :' + oauth_token_secret);
-            console.log('requestoken results :' + sys.inspect(results));
-            console.log('Requesting access token...');
-            oa.getOAuthAccessToken(oauth_token, oauth_token_secret, function(error, oauth_access_token, oauth_access_token_secret, results2) {
-                console.log('oauth_access_token :' + oauth_access_token);
-                console.log('oauth_token_secret :' + oauth_access_token_secret);
-                console.log('accesstoken results :' + sys.inspect(results2));
-				oa.get("http://api.twitter.com/1/statuses/retweeted_by_me.json", oauth_access_token, oauth_access_token_secret, function(error, data) {
-				    console.log(data);
-				});
-            });
-        }
-    });
+    // oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results) {
+    //     if (error) {
+    //         console.log('error :' + error);
+    //     } else {
+    //         console.log('oauth_token :' + oauth_token);
+    //         console.log('oauth_token_secret :' + oauth_token_secret);
+    //         console.log('requestoken results :' + sys.inspect(results));
+    //         console.log('Requesting access token...');
+    //         oa.getOAuthAccessToken(oauth_token, oauth_token_secret, function(error, oauth_access_token, oauth_access_token_secret, results2) {
+    //             console.log('oauth_access_token :' + oauth_access_token);
+    //             console.log('oauth_token_secret :' + oauth_access_token_secret);
+    //             console.log('accesstoken results :' + sys.inspect(results2));
+    // 				oa.get("http://api.twitter.com/1/statuses/retweeted_by_me.json", oauth_access_token, oauth_access_token_secret, function(error, data) {
+    // 				    console.log(data);
+    // 				});
+    //         });
+    //     }
+    // });
+
+	oa.get('http://api.twitter.com/1/statuses/retweeted_by_me.json', 
+	       ACCESS_TOKEN, ACCESS_TOKEN_SECRET, function(error, data) {
+	    console.log(data);
+	});
 });
 
 app.listen(PORT);

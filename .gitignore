@@ -29,3 +29,6 @@ publish
 
 # Server logs
 nohup.out
+
+# Other
+./app/settings.js

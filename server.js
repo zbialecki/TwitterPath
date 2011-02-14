@@ -1,9 +1,6 @@
 // Global Server Settings
 var PORT = 36687;
-
-// Twitter App Settings
-var ACCESS_TOKEN = '73127148-1IlTpT57TDJZLiU65vIMFyeYavYNXQDUi7f7BN6Pm'
-  , ACCESS_TOKEN_SECRET = 'ZHv2GVMEVrtbJHPtDzoQIptW5Cl3a4jBruwkyypvCJo';
+var T    = require('./app/settings').T;
 
 // Required Modules
 var sys     = require('sys')
@@ -14,8 +11,8 @@ var sys     = require('sys')
 
 var oa = new OAuth('https://api.twitter.com/oauth/request_token',
                    'https://api.twitter.com/oauth/access_token',
-                   'pqlCzlp1H9q8dxeKUDSmTw',
-                   'ZkYzKZmdfmJovXQoVt9AgLl75chcqcTb04N3WEwYA',
+                   T.CONSUMER_KEY,
+                   T.CONSUMER_SECRET,
                    '1.0A',
                    'http://findjoey.webfactional.com',
                    'HMAC-SHA1');
@@ -58,7 +55,7 @@ app.get('/', function(req, res) {
     // });
 
 	oa.get('http://api.twitter.com/1/statuses/retweeted_by_me.json', 
-	       ACCESS_TOKEN, ACCESS_TOKEN_SECRET, function(error, data) {
+	       T.ACCESS_TOKEN, T.ACCESS_TOKEN_SECRET, function(error, data) {
 	    console.log(data);
 	});
 });

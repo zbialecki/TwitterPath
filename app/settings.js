@@ -1,0 +1,9 @@
+// Twitter App Settings
+var T = {}
+T.ACCESS_TOKEN = '73127148-1IlTpT57TDJZLiU65vIMFyeYavYNXQDUi7f7BN6Pm'
+T.ACCESS_TOKEN_SECRET = 'ZHv2GVMEVrtbJHPtDzoQIptW5Cl3a4jBruwkyypvCJo'
+
+T.CONSUMER_KEY = 'pqlCzlp1H9q8dxeKUDSmTw'
+T.CONSUMER_SECRET = 'ZkYzKZmdfmJovXQoVt9AgLl75chcqcTb04N3WEwYA'
+
+exports.T = T

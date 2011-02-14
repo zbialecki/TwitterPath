@@ -2,9 +2,10 @@
 var PORT = 36687;
 var ENV  = "development";
 
-// Detect joyent no.de facility
-if (process.env.SMF_ZONENAME && process.env.SMF_ZONENAME.length > 0) {
-    ENV = "production"
+// Detect joyent no.de
+if (process.env.JOYENT) {
+    PORT = 80;
+    ENV  = "production";
 }
 
 // Required Modules
@@ -53,24 +54,36 @@ app.get('/', function(req, res) {
     //             console.log('oauth_access_token :' + oauth_access_token);
     //             console.log('oauth_token_secret :' + oauth_access_token_secret);
     //             console.log('accesstoken results :' + sys.inspect(results2));
-    // 				oa.get("http://api.twitter.com/1/statuses/retweeted_by_me.json", oauth_access_token, oauth_access_token_secret, function(error, data) {
-    // 				    console.log(data);
-    // 				});
+    //              oa.get("http://api.twitter.com/1/statuses/retweeted_by_me.json", oauth_access_token, oauth_access_token_secret, function(error, data) {
+    //                  console.log(data);
+    //              });
     //         });
     //     }
     // });
-
-	oa.get('http://api.twitter.com/1/statuses/retweeted_by_me.json', 
-	       T.ACCESS_TOKEN, T.ACCESS_TOKEN_SECRET, function(error, data) {
-	    console.log(data);
-	});
 });
 
 app.listen(PORT);
 console.log('Server is now listening on port ' + PORT + '\n');
 
-var socket = io.listen(app);
-socket.on('connection', function(client) {
+var io = io.listen(app);
+io.on('connection', function(client) {
+    getRandomStart(client);
     client.on('message', function(msg) { console.log(msg) });
     client.on('disconnect', function() {});
 });
+
+
+var getRandomStart = function(client) {
+	// Get a random screen name from our list of top twitter celebs
+    oa.get('http://api.twitter.com/1/users/show.json?screen_name=zbialecki', 
+           T.ACCESS_TOKEN, T.ACCESS_TOKEN_SECRET, function(error, data) {
+	    if (error) {
+		    client.send({ status: 'error' });
+	    }
+	
+        client.send({
+	        start_person: JSON.parse(data),
+	        status: 'ok'
+	    });
+    });
+}

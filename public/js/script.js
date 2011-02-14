@@ -53,9 +53,8 @@ $(document).ready(function() {
 
 	socket = new io.Socket('localhost');
 	socket.connect();
-	socket.send('Check it out bitches!');
 	socket.on('message', function(data){
-	    console.log('Got data from the server: ' + data);
+	    console.debug(data);
 	});
 		
 	/***

@@ -1,6 +1,11 @@
 // Global Server Settings
 var PORT = 36687;
-var T    = require('./settings').T;
+var ENV  = "development";
+
+// Detect joyent no.de facility
+if (process.env.SMF_ZONENAME && process.env.SMF_ZONENAME.length > 0) {
+    ENV = "production"
+}
 
 // Required Modules
 var sys     = require('sys')
@@ -9,6 +14,7 @@ var sys     = require('sys')
   , jqtpl   = require('jqtpl')
   , OAuth   = require('oauth').OAuth;
 
+var T  = require(process.env.TWEETPATH_SETTINGS).T;
 var oa = new OAuth('https://api.twitter.com/oauth/request_token',
                    'https://api.twitter.com/oauth/access_token',
                    T.CONSUMER_KEY,

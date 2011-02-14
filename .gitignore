@@ -31,4 +31,4 @@ publish
 nohup.out
 
 # Other
-./app/settings.js
+settings.js

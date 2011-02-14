@@ -1,6 +1,6 @@
 // Global Server Settings
 var PORT = 36687;
-var T    = require('./app/settings').T;
+var T    = require('./settings').T;
 
 // Required Modules
 var sys     = require('sys')

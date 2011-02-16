@@ -78,12 +78,16 @@ var getRandomStart = function(client) {
     oa.get('http://api.twitter.com/1/users/show.json?screen_name=zbialecki', 
            T.ACCESS_TOKEN, T.ACCESS_TOKEN_SECRET, function(error, data) {
 	    if (error) {
-		    client.send({ status: 'error' });
-	    }
+		    client.send({
+				type: 'error',
+				message: 'Error getting protected resource from Twitter'
+			})
+			return
+	    } 
 	
         client.send({
-	        start_person: JSON.parse(data),
-	        status: 'ok'
-	    });
+	        profile: JSON.parse(data),
+	        type: 'profile'
+	    })
     });
 }

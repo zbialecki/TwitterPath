@@ -1,10 +1,10 @@
 // Global Server Settings
-var PORT = 36687;
+var PORT = 8080;
 var ENV  = "development";
 
 // Detect joyent no.de
 if (process.env.JOYENT) {
-    PORT = 80;
+    PORT = process.env.PORT;
     ENV  = "production";
 }
 
@@ -12,7 +12,7 @@ if (process.env.JOYENT) {
 var sys     = require('sys')
   , express = require('express')
   , io      = require('socket.io')
-  , jqtpl   = require('jqtpl')
+  , ejs     = require('ejs')
   , OAuth   = require('oauth').OAuth;
 
 var T  = require(process.env.TWEETPATH_SETTINGS).T;
@@ -21,14 +21,14 @@ var oa = new OAuth('https://api.twitter.com/oauth/request_token',
                    T.CONSUMER_KEY,
                    T.CONSUMER_SECRET,
                    '1.0A',
-                   'http://findjoey.webfactional.com',
+                   'http://tweetpath.no.de',
                    'HMAC-SHA1');
                     
 var app = express.createServer();
 
 app.configure(function() {
-    app.set("view engine", "html");
-    app.register(".html", jqtpl);
+    app.set('view engine', 'html');
+    app.register('.html', ejs);
     app.use(express.bodyDecoder());
     app.use(express.methodOverride());
     app.use(express.staticProvider(__dirname + '/public'));

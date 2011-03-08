@@ -12,7 +12,7 @@ if (process.env.JOYENT) {
 var sys     = require('sys')
   , express = require('express')
   , io      = require('socket.io')
-  , ejs     = require('ejs')
+  , jqtpl   = require('jqtpl')
   , OAuth   = require('oauth').OAuth;
 
 var T  = require(process.env.TWEETPATH_SETTINGS).T;
@@ -28,7 +28,7 @@ var app = express.createServer();
 
 app.configure(function() {
     app.set('view engine', 'html');
-    app.register('.html', ejs);
+    app.register('.html', jqtpl);
     app.use(express.bodyDecoder());
     app.use(express.methodOverride());
     app.use(express.staticProvider(__dirname + '/public'));
@@ -78,16 +78,16 @@ var getRandomStart = function(client) {
     oa.get('http://api.twitter.com/1/users/show.json?screen_name=zbialecki', 
            T.ACCESS_TOKEN, T.ACCESS_TOKEN_SECRET, function(error, data) {
 	    if (error) {
-		    client.send({
-				type: 'error',
-				message: 'Error getting protected resource from Twitter'
-			})
-			return
-	    } 
-	
+            client.send({
+                type: 'error',
+                message: 'Error getting protected resource from Twitter'
+            })
+            return
+        } 
+    
         client.send({
-	        profile: JSON.parse(data),
-	        type: 'profile'
-	    })
+            profile: JSON.parse(data),
+            type: 'profile'
+        })
     });
 }

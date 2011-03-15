@@ -38,7 +38,7 @@ app.configure(function() {
 // Routes
 app.get('/', function(req, res) {
     res.render('index', {
-        locals: { title: 'TwitterPath :: Explore Connections on Twitter' },
+        title: 'TwitterPath :: Explore Connections on Twitter',
         layout: 'layout.html'
     });
     

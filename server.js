@@ -29,9 +29,9 @@ var app = express.createServer();
 app.configure(function() {
     app.set('view engine', 'html');
     app.register('.html', jqtpl);
-    app.use(express.bodyDecoder());
+    app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(express.staticProvider(__dirname + '/public'));
+    app.use(express.static(__dirname + '/public'));
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 

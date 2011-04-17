@@ -15,7 +15,9 @@ var sys     = require('sys')
   , jqtpl   = require('jqtpl')
   , OAuth   = require('oauth').OAuth;
 
-var T  = require(process.env.TWEETPATH_SETTINGS).T;
+//var T  = require(process.env.TWEETPATH_SETTINGS).T;
+var T  = require('./settings.js').T;
+
 var oa = new OAuth('https://api.twitter.com/oauth/request_token',
                    'https://api.twitter.com/oauth/access_token',
                    T.CONSUMER_KEY,
@@ -28,7 +30,7 @@ var app = express.createServer();
 
 app.configure(function() {
     app.set('view engine', 'html');
-    app.register('.html', jqtpl);
+    app.register('.html', jqtpl.express);
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.static(__dirname + '/public'));

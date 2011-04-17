@@ -15,8 +15,7 @@ var sys     = require('sys')
   , jqtpl   = require('jqtpl')
   , OAuth   = require('oauth').OAuth;
 
-//var T  = require(process.env.TWEETPATH_SETTINGS).T;
-var T  = require('./settings.js').T;
+var T  = require(process.env.TWEETPATH_SETTINGS).T;
 
 var oa = new OAuth('https://api.twitter.com/oauth/request_token',
                    'https://api.twitter.com/oauth/access_token',

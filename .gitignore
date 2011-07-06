@@ -26,6 +26,7 @@ dwsync.xml
 .svn
 publish
 .idea
+node_modules
 
 # Server logs
 nohup.out
